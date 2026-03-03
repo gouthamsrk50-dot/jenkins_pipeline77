@@ -1,25 +1,12 @@
-pipeline {
+pipeline{
     agent any
 
-    stages {
-
-        stage('STAGE 1') {
+    stages{
+        stage ('Hello stage') {
             steps {
-                sh 'sleep 5'
-                echo 'This is the stage 1'
-            }
-        }
-
-        stage('STAGE 2') {
-            steps {
-                sh '''
-                pwd
-                ls -lrt
-                whoami
-                sleep 5
-                echo "This is Linux command"
-                '''
+                echo "Hello Devops"
             }
         }
     }
 }
+
