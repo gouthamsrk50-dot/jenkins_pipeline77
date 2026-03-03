@@ -21,5 +21,16 @@ pipeline {
                 '''
             }
         }
+        stage('STAGE 3') {
+            steps {
+                sh '''
+                pwd
+                ls -lrt
+                whoami
+                sleep 5
+                echo "This is Linux command"
+               '''
+            }
+        }
     }
 }
