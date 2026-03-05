@@ -14,43 +14,60 @@
 //             steps {
 //                 echo "Testing..."
 //                 sh 'sleep 2'
-//             }
-//         }
+// //             }
+// //         }
 
-//         stage('Deploy') {
-//             steps {
-//                 echo "Deploying....."
-//                 sh 'sleep 5'
-//             }
-//         }
-//     }
-// }
+// //         stage('Deploy') {
+// //             steps {
+// //                 echo "Deploying....."
+// //                 sh 'sleep 5'
+// //             }
+// //         }
+// //     }
+// // }
+
+// // pipeline {
+// //     agent any
+// //     parameters {
+// //         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+
+// //         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+
+// //         booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+
+// //         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+
+// //         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+// //     }
+// //     stages {
+// //         stage('Example') {
+// //             steps {
+// //                 echo "Hello ${params.PERSON}"
+
+// //                 echo "Biography: ${params.BIOGRAPHY}"
+
+// //                 echo "Toggle: ${params.TOGGLE}"
+
+// //                 echo "Choice: ${params.CHOICE}"
+
+// //                 echo "Password: ${params.PASSWORD}"
+// //             }
+// //         }
+// //     }
+// // }
 
 // pipeline {
 //     agent any
-//     parameters {
-//         string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-
-//         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
-
-//         booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
-
-//         choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
-
-//         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+//     environment{
+//         APP_NAME = "INSTAGRAM"
+//         ENV = "dev"
 //     }
+
 //     stages {
-//         stage('Example') {
+//         stage('print') {
 //             steps {
-//                 echo "Hello ${params.PERSON}"
-
-//                 echo "Biography: ${params.BIOGRAPHY}"
-
-//                 echo "Toggle: ${params.TOGGLE}"
-
-//                 echo "Choice: ${params.CHOICE}"
-
-//                 echo "Password: ${params.PASSWORD}"
+//                 echo "Application: ${APP_NAME}"
+//                 echo "Environment: ${ENV}"
 //             }
 //         }
 //     }
@@ -58,16 +75,39 @@
 
 pipeline {
     agent any
-    environment{
-        APP_NAME = "INSTAGRAM"
+
+    parameters {
+        string(name: 'NAME', defaultValue: 'Goutham', description: 'Enter your name')
+    }
+
+    environment {
+        APP_NAME = "SPOTIFY"
         ENV = "dev"
     }
 
     stages {
-        stage('print') {
+
+        stage('Build') {
             steps {
-                echo "Application: ${APP_NAME}"
+                echo "Hello ${params.NAME}"
+                echo "Company: ${env.APP_NAME}"
                 echo "Environment: ${ENV}"
+            }
+        }
+
+        stage('Test') {
+            agent { label 'slave1'}
+
+            steps {
+                echo "Running Tests...."
+            }
+        }
+
+        stage('Deploy') {
+            agent { label 'slave_two'}
+
+            steps {
+                echo "Deploying application"
             }
         }
     }
