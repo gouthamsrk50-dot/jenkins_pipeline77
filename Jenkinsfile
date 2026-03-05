@@ -67,7 +67,7 @@ pipeline {
         stage('print') {
             steps {
                 echo "Application: ${APP_NAME}"
-                echo "Environmenet: ${ENV}"
+                echo "Environment: ${ENV}"
             }
         }
     }
