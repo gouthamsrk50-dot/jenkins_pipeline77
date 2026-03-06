@@ -74,6 +74,28 @@
 // 
 // 
 
+// pipeline {
+//     agent any
+
+//     environment {
+//         AWS_DEFAULT_REGION = "ap-south-1"
+//     }
+
+//     stages {
+
+//         stage('Authenticate AWS') {
+//             steps {
+//                 sh '''
+//                 echo "Checking AWS Identity"
+//                 aws sts get-caller-identity
+//                 echo "Region: $AWS_DEFAULT_REGION"
+//                 '''
+//             }
+//         }
+
+//     }
+// }
+
 pipeline {
     agent any
 
@@ -85,11 +107,22 @@ pipeline {
 
         stage('Authenticate AWS') {
             steps {
-                sh '''
-                echo "Checking AWS Identity"
-                aws sts get-caller-identity
-                echo "Region: $AWS_DEFAULT_REGION"
-                '''
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+
+                    sh '''
+                    echo "Checking AWS Authentication..."
+
+                    USERNAME=$(aws sts get-caller-identity \
+                    --query Arn \
+                    --output text | cut -d'/' -f2)
+
+                    echo "Authenticated AWS User: $USERNAME"
+                    echo "Region: $AWS_DEFAULT_REGION"
+                    '''
+                }
             }
         }
 
