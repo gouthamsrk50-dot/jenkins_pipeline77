@@ -71,8 +71,7 @@
 //             }
 //         }
 //     }
-// }
-
+// 
 // 
 
 pipeline {
@@ -86,14 +85,11 @@ pipeline {
 
         stage('Authenticate AWS') {
             steps {
-                    sh '''
-                    echo "Checking AWS Identity"
-                    aws sts get-caller-identity
-                    echo "Region: $AWS_DEFAULT_REGION"
-                    '''
-
-                }
-
+                sh '''
+                echo "Checking AWS Identity"
+                aws sts get-caller-identity
+                echo "Region: $AWS_DEFAULT_REGION"
+                '''
             }
         }
 
