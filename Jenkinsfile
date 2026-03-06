@@ -86,15 +86,10 @@ pipeline {
 
         stage('Authenticate AWS') {
             steps {
-
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-creds'
-                ]]) {
-
                     sh '''
                     echo "Checking AWS Identity"
-                    aws sts get-caller-identity
+                    aws sts get-caller-
+                    echo "Region: $AWS_DEFAULT_REGION"
                     '''
 
                 }
