@@ -114,11 +114,7 @@ pipeline {
 
                     sh '''
                     echo "Checking AWS Authentication..."
-
-                    USERNAME=$(aws sts get-caller-identity \
-                    --query Arn \
-                    --output text | cut -d'/' -f2)
-
+                    USERNAME=$(aws sts get-caller-identity)
                     echo "Authenticated AWS User: $USERNAME"
                     echo "Region: $AWS_DEFAULT_REGION"
                     '''
