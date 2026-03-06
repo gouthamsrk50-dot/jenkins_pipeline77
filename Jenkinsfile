@@ -88,7 +88,7 @@ pipeline {
             steps {
                     sh '''
                     echo "Checking AWS Identity"
-                    aws sts get-caller-
+                    aws sts get-caller-identity
                     echo "Region: $AWS_DEFAULT_REGION"
                     '''
 
