@@ -73,42 +73,34 @@
 //     }
 // }
 
+// 
+
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'NAME', defaultValue: 'Goutham', description: 'Enter your name')
-    }
-
     environment {
-        APP_NAME = "SPOTIFY"
-        ENV = "dev"
+        AWS_DEFAULT_REGION = "ap-south-1"
     }
 
     stages {
 
-        stage('Build') {
+        stage('Authenticate AWS') {
             steps {
-                echo "Hello ${params.NAME}"
-                echo "Company: ${env.APP_NAME}"
-                echo "Environment: ${ENV}"
+
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-creds'
+                ]]) {
+
+                    sh '''
+                    echo "Checking AWS Identity"
+                    aws sts get-caller-identity
+                    '''
+
+                }
+
             }
         }
 
-        stage('Test') {
-            agent { label 'slave1'}
-
-            steps {
-                echo "Running Tests...."
-            }
-        }
-
-        stage('Deploy') {
-            agent { label 'slave_two'}
-
-            steps {
-                echo "Deploying application"
-            }
-        }
     }
 }
